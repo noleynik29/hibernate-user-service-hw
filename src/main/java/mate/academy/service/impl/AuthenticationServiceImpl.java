@@ -5,32 +5,25 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
+import mate.academy.service.UserService;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final SecureRandom secureRandom = new SecureRandom();
     @Inject
-    private final UserDao userDao;
-
-    public AuthenticationServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userDao.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("User not found"));
-
-        String hashed = hashPassword(password, user.getSalt());
-
-        if (!hashed.equals(user.getPassword())) {
-            throw new AuthenticationException("Incorrect password");
+        User user = userService.findByEmail(email).orElse(null);
+        if (user == null ||
+                !hashPassword(password, user.getSalt()).equals(user.getPassword())) {
+            throw new AuthenticationException("Incorrect username or password");
         }
 
         return user;
@@ -38,19 +31,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userDao.findByEmail(email).isPresent()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email already exists: " + email);
         }
 
-        String salt = generateSalt();
-        String hash = hashPassword(password, salt);
-
         User user = new User();
         user.setEmail(email);
-        user.setPassword(hash);
-        user.setSalt(salt);
+        user.setPassword(password);
 
-        return userDao.add(user);
+        return userService.add(user);
     }
 
     private String generateSalt() {
