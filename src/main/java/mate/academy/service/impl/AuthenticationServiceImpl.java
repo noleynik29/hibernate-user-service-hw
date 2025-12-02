@@ -1,6 +1,6 @@
 package mate.academy.service.impl;
 
-import mate.academy.dao.UserDAO;
+import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -15,10 +15,10 @@ import java.util.Base64;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Inject
-    private final UserDAO userDao;
+    private final UserDao userDao;
     private static final SecureRandom secureRandom = new SecureRandom();
 
-    public AuthenticationServiceImpl(UserDAO userDao) {
+    public AuthenticationServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
