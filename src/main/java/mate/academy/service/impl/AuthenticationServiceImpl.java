@@ -1,22 +1,22 @@
 package mate.academy.service.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private static final SecureRandom secureRandom = new SecureRandom();
     @Inject
     private final UserDao userDao;
-    private static final SecureRandom secureRandom = new SecureRandom();
 
     public AuthenticationServiceImpl(UserDao userDao) {
         this.userDao = userDao;
