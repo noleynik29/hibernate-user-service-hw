@@ -5,9 +5,8 @@ import java.time.LocalDateTime;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.model.User;
+import mate.academy.service.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -51,5 +50,12 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService = null;
+        authenticationService.register("email@email.com", "password");
+        authenticationService.login("email@email.com", "password");
+
+        UserService userService = null;
+        System.out.println(userService.findByEmail("email@email.com"));
     }
 }
