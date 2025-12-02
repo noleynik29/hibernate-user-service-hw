@@ -1,6 +1,6 @@
 package mate.academy.dao.impl;
 
-import mate.academy.dao.UserDAO;
+import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.Optional;
 
-public class UserDaoImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         Transaction transaction = null;
