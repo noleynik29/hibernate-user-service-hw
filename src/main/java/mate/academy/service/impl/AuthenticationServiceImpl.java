@@ -19,8 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email).orElse(null);
 
-        if (user == null ||
-                !HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
+        if (user == null
+                || !HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
             throw new AuthenticationException("Incorrect username or password");
         }
 
